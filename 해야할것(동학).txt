@@ -1,0 +1,451 @@
+2022.02.10 (목) 14시
+동학 :
+* 비밀번호 재확인
+* 특정 페이지 로드시 로그인 여부 확인
+* 다중 업로드
+* 폴더 만들기부터해야함
+* 업로드한 박스 내에서 전체 다운로드 안보이게 해당 다운로드만
+
+
+>팝업창 (내용 입력이 안됨) DB필요
+>아이템 생성 시 데이터베이스 생성 필요 <-
+>아이템 저장 안하면 자동으로 삭제해야함.
+팝업창은 아이템 저장 완료되면 이후에 하는것이 좋을듯
+
+팝업창에 내용수정, 내용저장 버튼 사용할 수 있게 변경하기 + 오른쪽 아래로 위치 이동
+팝업창 더블클릭으로 열기
+
+notice.jsp 1~10 만드는게 좋을듯
+게시글 번호 삭제하면 중간에 빔
+
+
+다운로드 버튼 눌러서 쭉 나오게
+업로드한 파일 삭제 기능
+아이템을 저장하지 않았는데 업로드 다운로드가 됨
+아이템 삭제시 업로드한 파일들과 메모(팝업창), 폴더 삭제
+
+
+* 추가로 업로드 할때 userID/itemID(?)로 구분해서 항목별로 따로 저장 및 로드.
+
+
+2022.02.11
+mysql 에서
+
+use file;
+->
+alter table file add userID varchar(20) not null;
+alter table file add itemID varchar(30) not null;
+->
+desc file; 로 확인
+
+
+보내야 할 것.
+FileDTO, FileDAO, upload_map.jsp, uploadAction.jsp, downloadAction.java
+
+
+2022.02.12
+* userID, itemID 교차 검증
+upload_map.jsp, FileDAO.java
+
+
+mysql에서
+create database note;
+use note;
+create table note(
+ userID varchar(20) not null,
+ itemID varchar(30) not null,
+ noteContent varchar(2048)
+);
+
+src->note 전달
+
+
+메모(팝업창) DB에 필요한 것
+userID, itemID, noteContent
+최초 저장 시 userID, itemID, noteContent -> write 
+userID, itemID AND 하여 내용 불러오기 -> readNote
+내용 변경 시 userID AND itemID 후 불러온 noteContent update
+
+
+
+
+
+
+
+
+* 회원가입시 counts, publicmap 생성
+* 회원가입 탈퇴 기능 (탈퇴시 DB 삭제)
+
+
+deleteUserAction.jsp 생성해야함.
+userDAO.java
+home.jsp
+notice.jsp
+post.jsp
+joinAction.jsp
+PublicmapDAO.java
+
+
+
+* 다운로드 페이지로 ( 파일 관리 )
+* 업로드 확장자 대문자면 안됨
+* 업로드 해놓은거 사용자가 삭제할 수 있게
+* 업로드한 실제 파일 삭제 기능
+* 폴더가 비었다면 폴더도 삭제
+
+
+upload_map.jsp
+uploadAction.jsp
+FileDAO.java 에 delete 추가
+fileDownload.jsp
+deleteFileAction.jsp 생성
+
+
+
+
+* 회원탈퇴 시 관련된 DB 전부 삭제
+
+bbs | bbs - 게시글, user - user정보
+file - 전부
+map - counts, item, line, publicmap
+
+
+BbsDAO.java deleteUser 추가
+FileDAO.java deleteUser 추가
+ItemDAO.java deleteUser 추가
+LineDAO.java deleteUser 추가
+PublicmapDAO.java deleteUser 추가
+deleteUserAction.jsp
+
+
+
+
+
+
+* 상위요소 교체시 upload 폴더 이름 바꾸기, file db의 itemID도 바꾸기
+
+상위요소교체 후 업로드시 꼬인다
+
+map.jsp
+saveItemAction.jsp
+FileDAO.java - updateChange
+
+아이템 삭제시 업로드한 파일들과 메모(팝업창), 폴더 삭제
+
+* DB에 1열 추가해서 업로드시 0, 저장 버튼 클릭시 1로, 페이지 로드시 0이면 삭제, 1이면 불러오는 ( 폴더의 파일 삭제 )
+
+FileDTO.java
+FileDAO.java
+map.jsp
+
+
+saveFlag - 페이지 로드시 아이템이 없고 && 플래그가 0이면 관련 DB 및 폴더/파일 삭제, 아이템이 있다면 플래그 1로 초기화
+
+db file에 lastItemID, changeFlag(default=1), deleteFlag(default=1) 로 생성 후 작업 ㄱㄱ
+
+
+
+
+
+
+
+
+팝업창 (내용 입력이 안됨) DB필요
+팝업창에 내용수정, 내용저장 버튼 사용할 수 있게 변경하기 + 오른쪽 아래로 위치 이동
+notice.jsp 1~10 만드는게 좋을듯
+게시글 번호 삭제하면 중간에 빔
+추천 로드맵 페이지 필요 (게시판 화면 가져다가 쓸 예정)
+
+
+
+버그 발견!
+1. item에 item이 연속으로 있는 상태로
+2. 앞쪽 item을 상위요소교체하면 뒤쪽 item이 앞의 item에 연결되었던 라인 남음
+
+
+유저 세션 늘리기
+
+* 상위요소 교체시 upload 폴더 이름 바꾸기 (버그) => ajax
+map.jsp, updateFIleAction.jsp 만들기, FileDAO.java
+
+file db에서 alter table file drop saveFlag;
+
+* item 삭제시 업로드한 파일, DB 삭제
+
+FileDAO.java itemRename 삭제
+deleteFileAction.jsp
+map.jsp
+fileDownload.jsp
+upload_map.jsp 일부 변경
+
+* 연결된 item의 파일 같이 삭제
+
+팝업창 (내용 입력이 안됨) DB필요
+
+
+
+map/NoteDAO.java
+popup.jsp
+map.jsp
+
+
+notice.jsp 1~10 만드는게 좋을듯
+게시글 번호 삭제하면 중간에 빔 (일단 안하는걸로)
+추천 로드맵 페이지 필요 (게시판 화면 가져다가 쓸 예정)
+
+
+deleteItem 에서 while 문 아래에
+	    var form = document.getElementById("fileForm");
+            
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "action");
+            hiddenField.setAttribute("value", "itemDelete");
+            form.appendChild(hiddenField);
+            
+            fileChangeID = fromID;
+            fileData.setAttribute("value", fileChangeID);
+            fileForm = $("#fileForm").serialize();
+            $.ajax({
+               url: "deleteFileAction.jsp",
+               type: "post",
+               cache: false,
+               data: fileForm,
+               dataType: "json",
+               success: function(data) {
+                  console.log(data);
+               },
+               error: function (request, status, error) {
+                  console.log(error);
+               }
+            });
+
+
+
+
+
+
+* 팝업창 (내용 입력이 안됨) DB필요
+map.jsp NoteDAO.java noteAction.jsp popup.jsp
+
+
+use map에서 
+
+create table note (
+  userID varchar(30),
+  itemID varchar(30),
+  noteContent varchar(1028)
+);
+
+
+
+function popup() {   // 팝업 이벤트
+        var popup_name = fromID;
+        var opwin = window.open('popup.jsp?id='+fromID, popup_name, 'width=430,height=480,left=300px,top=100px,status=no,scrollbars=yes');
+      }
+
+
+
+240행
+      <form id="noteForm" method="post">
+        <input type="hidden" id="noteItemID" name="noteItemID">
+        <input type="hidden" id="noteType" name="noteType">
+      </form>
+
+var fileForm 아래
+      var noteItemID = document.getElementById("noteItemID");
+      var noteType = document.getElementById("noteType");
+      var noteForm;
+
+
+createItem() saveFlag 위
+
+            noteItemID.setAttribute("value", itemID);
+            noteType.setAttribute("value", "insert");
+            noteForm = $("#noteForm").serialize();
+            $.ajax({
+               url: "noteAction.jsp",
+               type: "post",
+               cache: false,
+               data: noteForm,
+               dataType: "json",
+               success: function(data) {
+                  console.log(data);
+               },
+               error: function (request, status, error) {
+                  console.log(error);
+               }
+            });
+
+
+deleteItem 부분 ajax
+
+clicked ajax 상위요소 교체
+
+
+
+
+회원가입시 아이디 중복
+
+join.jsp 고침
+
+본인 아니면 다운로드만 되게
+
+upload_map.jsp fileDownload.jsp
+popup.jsp
+
+
+notice.jsp 1~10 만드는게 좋을듯
+
+BbsDAO.jsp -count(), notice.jsp
+
+파일 다운로드 mpaID 적용하기
+
+
+
+
+
+게시글 번호 삭제하면 중간에 빔 (일단 안하는걸로)
+
+
+추천 로드맵 페이지 필요 (게시판 화면 가져다가 쓸 예정)
+use bbs;
+create table recommendmap(
+    ->   userID varchar(20),
+    ->   mapID varchar(20)
+    ->   );
+
+
+INSERT INTO counts VALUES(userID, hits, recommend);
+INSERT INTO publicmap VALUES(userID, publicmap, password);
+
+INSERT INTO counts VALUES(1, 1, 1);
+INSERT INTO publicmap VALUES(1, 1, "");
+
+
+
+
+
+각각 타이틀 넣기
+user 이메일 기본키 ( 나중에 )
+공지사항, 취업(공부)관련 게시판은 db 빼기
+
+<동학>
+공지사항 (글생성, 수정, 삭제 전부 관리자만) => Admin if(UserID=="Admin")
+공부게시판
+user 테이블 로그인 여부 확인 속성 추가
+
+
+
+
+
+공지사항 db 만들기
+
+use bbs;
+
+create table notice(
+noticeID int,
+noticeTitle varchar(50),
+userID varchar(20),
+noticeDate datetime,
+noticeContent varchar(2048),
+noticeAvailable int,
+primary key(noticeID)
+);
+
+create table studyboard(
+studyboardID int,
+studyboardTitle varchar(50),
+userID varchar(20),
+studyboardDate datetime,
+studyboardContent varchar(2048),
+studyboardAvailable int,
+primary key(studyboardID)
+);
+
+
+
+home
+
+noticeAdmin.jsp Studyboard.jsp
+src notice, studyboard
+
+write.jsp, writeAction.jsp
+post.jsp, update.jsp, updateAction.jsp, deleteAction.jsp,
+
+loginAction.jsp
+
+
+
+
+
+logoutAction.jsp 完
+deleteUserAction.jsp 完
+
+user 테이블 로그인 여부 확인 속성 추가
+isLogin
+alter table user add isLogin int;
+update user set isLogin=0;
+0이면 로그인 가능, 1이면 불가능
+
+deleteUserAction.jsp
+logoutAction.jsp
+loginAction.jsp
+joinAction.jsp
+UserDAO.java
+user->sessionListener.java
+web.xml -> web-app 아래에 
+	<listener>
+    	<listener-class>user.sessionListener</listener-class>
+    </listener> 
+추가
+
+
+로그인하고 브라우저닫고 다시열고 "로그아웃 버튼 누르면" 안됨
+아이템 삭제하면 note도 삭제 ? 잘됨
+Admin으로 글 수정,삭제 안됨
+
+
+update.jsp
+updateAction.jsp
+studyboard.jsp
+deleteAction.jsp
+logoutAction.jsp
+
+
+
+
+
+코드정리 (주석 정리 및 간략한 설명 주석으로 달기)
+uploadAction.jsp
+upload_map.jsp
+updateFileAction.jsp
+fileDownload.jsp
+studyboard.jsp
+recommendmap.jsp
+popup.jsp
+noticeAdmin.jsp
+noteAction.jsp
+logoutAction.jsp
+loginAction.jsp
+joinAction.jsp
+join.jsp
+deleteUserAction.jsp
+deleteFileAction.jsp
+sessionListener.java
+UserIDServlet.java
+UserDAO.java
+NoteDAO.java
+downloadAction.java (src-file)
+FileDAO.java
+
+
+
+UserDAO.java
+
+
+
+
+http://hjk709913.cafe24.com/home.jsp
+
+
