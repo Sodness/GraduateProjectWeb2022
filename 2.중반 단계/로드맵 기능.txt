@@ -1,0 +1,63 @@
+1. 생성시 데이터베이스에 CREATE
+2. 창을 닫을시 데이터베이스에 CREATE
+3. 저장 버튼을 클릭시 데이터베이스에 CREATE
+
+--------------------
+생성시 데이터베이스에 CREATE (item, line)
+삭제시 데이터베이스에서 DELETE (item, line)
+kim	id = item0_grade1 style = top: 137px; left: 329px;
+kim	id = grade1Totiem0_grade1 x1="455" y1="645" x2="597" y2="688"
+
+로드맵 들어올때 아이디 보고 데이터베이스 대조해서 불러오기 READ
+기존 로드맵이 있을시 추가, 삭제할때 UPDATE
+
+item id는 map.jsp createItem()에 있는 itemID로 가져오면되는데
+item top, left는 map.jsp drop(evet)에 있어서 drop 할때마다 데이터베이스를 열어야 되나 고민되네
+
+이게 drop 할때마다 서버에 요청을 하는 방법으로 가야될거 같은데
+처음은 CREATE로 가고 다음부터는 UPDATE로 가야지
+그럼 drop을 할때마다 기존에 있는지를 봐야되는데 그거 보다는
+클릭시 item이 활성화 되잖아? 그때 다른걸로 넘어가기 전까지는
+현 활성화 item의 존재여부를 담아두는 변수를 하나 지정해두면
+drop 할때마다 데이터베이스를 쭉다 검색을 안해봐도 이미 있는걸 아는거잖아?
+그럼 존재여부 isExist? 이런걸 하나 두는게 효율적으로 더 나을거 같은데
+
+1. 항목추가 하면 데이터베이스에 CREATE가 되는 것
+2. drop을 하면 데이터베이스에 UPDATE가 되는 것
+3. 항목삭제 하면 데이터베이스에 DELETE 되는 것
+4. map.jsp를 열었을때 userID 비교해서 데이터베이스 불러와서 SHOW 해주는거
+
+우리 그러고 보니까 사용자 데이터베이스 로그인? 회원가입 그쪽이 아직 안됬네
+
+ㅈ됬는데? 답없네...
+이렇게 되면 저장 버튼을 넣을 수 밖에 없겠는데 방법이
+
+saveAction 생각해보니까 이미지랑 소스파일 팝업창도 다 저장해야되는 거잖아
+약~~간 ㅈ되네
+
+어질어질한데.. 아예 html을 통째로 저장해버리는건 안되나?
+지금 저장해야되는게 (map 에서만)
+item
+item 내용 (링크)
+line
+팝업창 내용
+
+이미지
+코드.zip
+
+
+"kim"
+My 로드맵.html (item, line)
+이미지
+이미지
+이미지
+코드.zip
+코드.zip
+팝업창 내용 (데이터베이스에 String형 또는 .html 형식으로)
+
+key 외래키 foriegn key "kim" ==> 이미지 데이터베이스
+001	img(1).jpg	kim
+002	img(2).jpg	kim
+
+var str = "border: 4px solid black; top: 360px; left: 218px; width: 201px; height: 52px;";
+var idx = str.indexOf("top")

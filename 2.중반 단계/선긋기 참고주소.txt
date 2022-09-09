@@ -1,0 +1,28 @@
+<JavaScript로 선긋기>
+https://curryyou.tistory.com/324
+https://baekh-93.tistory.com/70
+
+<JavaScript로 좌표구하기>
+https://mommoo.tistory.com/85
+https://admm.tistory.com/112
+
+<JavaScript 요소 너비, 높이>
+https://bonggugu.tistory.com/35
+
+<버튼 클릭시 함수호출>
+https://devhoma.tistory.com/90
+https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=tkddlf4209&logNo=220512073357
+https://www.w3schools.com/jsref/event_onclick.asp
+https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_document_getelementsbyclassname_loop
+
+
+
+
+
+
+
+
+
+
+
+
