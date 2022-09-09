@@ -1,0 +1,77 @@
+> 기본 전제: map.jsp 에서 sql문을 String으로 만들어서 saveItemAction.jsp에 보낸다
+
+
+> map.jsp에서 sql문을 보내기 전에 어떤식으로 보낼지
+item을 insert하고 delete한다면 불필요한 sql문을 실행하게 됨
+item을 update하고 update한다면 마지막 update만 하는게 불필요한 행동을 줄임
+
+
+> 불필요한 sql문까지 보냈을 경우
+장점: sql문을 불필요하게 실행하더라도 중복, 의미없는 실행으로 for문을 돌려서
+       기존 sql문을 고쳐야하는 행동을 생략할 수 있음
+단점: 불필요한 sql문이 너무 많이 쌓일 수 있음
+
+
+> 필요한 sql문만 보냈을 경우
+장점: saveItemAction.jsp에서 불필요한 행동을 줄일 수 있음
+단점: map.jsp 에서 사용자가 행동할 때마다 sql문을 비교해서 지속적으로 갱신해줘야 함
+
+1안) 사용자의 행동마다 sql 배열을 처음부터 끝까지 for문을 돌려서 기존에 있는지 보고 있다면 갱신
+2안) sql 배열을 item당 3개씩(insert, update, delete) 끊어서 사용 for문으로 찾을 필요가 없어짐
+3안) sql 배열을 item당 1개씩 사용하되 String 안에 모든 내용을 담아둠 (itemID insert ... update ... delete ...)
+      이렇게 간다면 배열도 itemID의 고유번호에 맞게 지정할 수 있음
+4안) sql 배열을 item당 1개씩 사용하되 String 대신에 클래스를 사용함 setter, getter 필요
+
+
+> map 조건
+update에 한해서 기존 내용이 있었다면 새로운 내용으로 덮어씌움 (과정을 쉽게 하려면 update를 나눌필요도 있음)
+한 item내에 insert와 delete가 동시에 존재한다면 해당 item은 전송하지 않음
+line도 update 된거 간추려서 같이 보내야됨
+
+생성, 생성 후 수정, 생성 후 수정 후 삭제, 생성 후 삭제
+수정, 수정 후 삭제
+삭제
+
+  +createItem
+  +drop
+  +modify
+  +mouseUp
+  +deleteItem
+  +change
+  +saveItem
+
+insertSQL: insert into table values (?,?,?,?...);
+updateTLSQL: update table set top=?, left=? where itemID=?;
+updateCSQL: update table set content=? where itemID=?;
+updateWHSQL: update table set width=?, height=? where itemID=?;
+deleteSQL: delete from table where itemID=?;
+updateIDSQL: update table set itemID=? where itemID=?;
+
+insert && delete 라면 건너뛰고
+updateTL 라면 양쪽 line
+updateWH 라면 자식 line만
+(dictionary 순서 중요)
+
+> saveItemAction 조건
+if(insert && delete) {
+}
+else if(delete) {
+}
+else if(insert) {
+    if(update) { }
+}
+else if(update) {
+}
+
+> 수정한 부분
+<DB>
+alter table item add column itemWidth varchar(20) not null;
+alter table item add column itemHeight varchar(20) not null;
+
+<map.jsp>
+<map.item.java>
+<map.itemDAO.java>
+<map.lineDAO.java>
+<saveItemAction.jsp>
+
+

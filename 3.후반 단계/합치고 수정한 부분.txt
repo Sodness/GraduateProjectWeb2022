@@ -1,0 +1,41 @@
+<home.jsp>
+html -> jsp
+main_box    margin-top: 15px 추가
+
+<notice.jsp>
+html -> jsp
+수정 버튼 삭제
+삭제 버튼 삭제
+
+    .top_box {
+      display: flex;
+      justify-content: space-between;
+    } (삭제)
+
+    .login {
+      float: right;
+    } (추가)
+
+<write.jsp>
+html -> jsp
+login 삭제
+취소 버튼 reset을 notice.jsp로 이동하게 수정
+
+<post.jsp>
+html -> jsp
+회원가입 버튼 없던거 추가
+    .top_box {
+      display: flex;
+      justify-content: space-between;
+    } (삭제)
+
+    .login {
+      float: right;
+    } (추가)
+
+<update.jsp>
+html -> jsp
+취소버튼 reset을 history.go(-1) 수정  //이전 페이지로 이동
+
+<map.jsp>
+html -> jsp

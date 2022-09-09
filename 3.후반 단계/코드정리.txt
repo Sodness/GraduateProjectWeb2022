@@ -1,0 +1,56 @@
+코드정리 (주석 정리 및 간략한 설명 주석으로 달기)
+<동학>
++uploadAction.jsp
++upload_map.jsp
++updateFileAction.jsp
++fileDownload.jsp
++studyboard.jsp
++recommendmap.jsp
++popup.jsp
++noticeAdmin.jsp
++noteAction.jsp
++logoutAction.jsp
++loginAction.jsp
++joinAction.jsp
++join.jsp
++deleteUserAction.jsp
++deleteFileAction.jsp
+------------------------
++sessionListener.java
++UserIDServlet.java
++UserDAO.java
++NoteDAO.java
++downloadAction.java (src-file)
++FileDAO.java
+
+
+<영원>
+createItemAction.jsp 삭제 (ajax 사용하면서 saveItemAction.jsp로 통일)
+privatemapAction.jsp 삭제 (ajax 사용하면서 publicmapAction.jsp로 통일)
+map.jsp
+publicmapAction.jsp
+recommendUp.jsp
+roadmapManual.jsp
+saveItemAction.jsp
+deleteAction.jsp
+home.jsp
+notice.jsp
+post.jsp
+update.jsp
+updateAction.jsp
+write.jsp
+writeAction.jsp
+map.jsp
+------------------------
+bbsDAO.java
+NoticeDAO.java
+studyboardDAO.java
+SubMenu.java (삭제)
+SubMenuDAO.java (삭제)
+CountsDAO.java
+ItemDAO.java
+LineDAO.java
+MapLikeyDAO.java
+PublicmapDAO.java
+
+
